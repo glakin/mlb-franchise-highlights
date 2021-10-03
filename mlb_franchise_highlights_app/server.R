@@ -30,7 +30,6 @@ avg <- battingSeasons %>%
     group_by(nameFull, franchName) %>% 
     summarize(ABs = sum(AB), Hs = sum(H)) 
 
-
 avg$avg <- avg$Hs / avg$ABs 
 
 avg_10 <- avg %>%
@@ -93,11 +92,11 @@ shinyServer(function(input, output) {
         teamAVG <- avg_10[avg_10$franchName == team, ] %>%
             arrange(avg)
         
-        #y_min <- min(teamAVG$avg) - 0.080
-        #y_max <- max(teamAVG$avg) + 0.020
+        y_min <- min(teamAVG$avg) - 0.080
+        y_max <- max(teamAVG$avg) + 0.020
         
-        y_min <- .250
-        y_max <- .400
+        #y_min <- .250
+        #y_max <- .400
         
         p <- ggplot(data = teamAVG, aes(x = reorder(nameFull, avg), y = avg)) +
             coord_cartesian(ylim = c(y_min, y_max)) +
@@ -123,6 +122,8 @@ shinyServer(function(input, output) {
         teamHR <- hrs_10[hrs_10$franchName == team, ] %>%
             arrange(HRs)
         
+        offsetHR <- max(teamHR$HRs) / 30
+        
         p <- ggplot(data = teamHR, aes(x = reorder(nameFull, HRs), y = HRs)) +
             #coord_cartesian(ylim = c(y_min, y_max)) +
             geom_bar(stat="identity", color = "black", fill = teamColor) +
@@ -131,7 +132,58 @@ shinyServer(function(input, output) {
                                             margin = margin(10, 0, 10, 0)),
                   axis.text.x = element_text(angle=50, size=11, vjust=0.5),
                   axis.text.y = element_text(size=11, vjust=0.5),
-                  axis.ticks.x = element_blank())
+                  axis.ticks.x = element_blank()) +
+            geom_text(aes(label = HRs, y = HRs + offsetHR), position = position_dodge(0.9))
+        
+        p
+        
+    })
+    
+    output$plot3 <- renderPlot({
+        
+        team <- input$team_select
+        teamColor <- teamColors[teamColors$franchName == team, 2]
+        
+        teamRBI <- rbis_10[rbis_10$franchName == team, ] %>%
+            arrange(RBIs)
+        
+        offsetRBI <- max(teamRBI$RBIs) / 25
+        
+        p <- ggplot(data = teamRBI, aes(x = reorder(nameFull, RBIs), y = RBIs)) +
+            #coord_cartesian(ylim = c(y_min, y_max)) +
+            geom_bar(stat="identity", color = "black", fill = teamColor) +
+            labs(title = paste(team, "Most Runs Batted In"), x = "Player", y = "Runs Batted In") +
+            theme(plot.title = element_text(size=18, face="bold",
+                                            margin = margin(10, 0, 10, 0)),
+                  axis.text.x = element_text(angle=50, size=11, vjust=0.5),
+                  axis.text.y = element_text(size=11, vjust=0.5),
+                  axis.ticks.x = element_blank()) +
+            geom_text(aes(label = RBIs, y = RBIs + offsetRBI), position = position_dodge(0.9))
+        
+        p
+        
+    })
+    
+    output$plot4 <- renderPlot({
+        
+        team <- input$team_select
+        teamColor <- teamColors[teamColors$franchName == team, 2]
+        
+        teamSB <- sb_10[sb_10$franchName == team, ] %>%
+            arrange(SBs)
+        
+        offsetSB <- max(teamSB$SBs) / 30
+        
+        p <- ggplot(data = teamSB, aes(x = reorder(nameFull, SBs), y = SBs)) +
+            #coord_cartesian(ylim = c(y_min, y_max)) +
+            geom_bar(stat="identity", color = "black", fill = teamColor) +
+            labs(title = paste(team, "Most Stolen Bases"), x = "Player", y = "Stolen Bases") +
+            theme(plot.title = element_text(size=18, face="bold",
+                                            margin = margin(10, 0, 10, 0)),
+                  axis.text.x = element_text(angle=50, size=11, vjust=0.5),
+                  axis.text.y = element_text(size=11, vjust=0.5),
+                  axis.ticks.x = element_blank()) +
+            geom_text(aes(label = SBs, y = SBs + offsetSB), position = position_dodge(0.9))
         
         p
         

@@ -25,7 +25,9 @@ shinyUI(fluidPage(
             selectInput("team_select", "Select a Franchise",
                         team_names$franchName),
             plotOutput("plot1"),
-            plotOutput("plot2")
+            plotOutput("plot2"),
+            plotOutput("plot3"),
+            plotOutput("plot4")
 
         #)
     )
