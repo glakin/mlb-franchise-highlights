@@ -10,6 +10,7 @@
 library(shiny)
 library(Lahman)
 library(ggplot2)
+library(dplyr)
 
 data(Batting)
 data(People)
@@ -24,7 +25,7 @@ battingSeasons <- left_join(Batting, Teams,
            HR.x, RBI, SB.x) %>%
     rename(AB = AB.x, H = H.x, HR = HR.x, SB = SB.x)
 
-battingSeasons$nameFull <- paste(seasons$nameFirst, seasons$nameLast)
+battingSeasons$nameFull <- paste(battingSeasons$nameFirst, battingSeasons$nameLast)
 
 avg <- battingSeasons %>% 
     group_by(nameFull, franchName) %>% 
@@ -102,13 +103,15 @@ shinyServer(function(input, output) {
             coord_cartesian(ylim = c(y_min, y_max)) +
             geom_bar(stat="identity", color = "black", fill = teamColor) +
             labs(title = paste(team, "Top Batting Averages (min. 1000 ABs)"), x = "Player", y = "Batting Average") +
-            theme(plot.title = element_text(size=18, face="bold",
+            theme(plot.title = element_text(size=25, face="bold",
                                             margin = margin(10, 0, 10, 0)),
-                  axis.text.x = element_text(angle=50, size=11, vjust=0.5),
-                  axis.text.y = element_text(size=11, vjust=0.5),
+                  axis.title = element_text(size=14),
+                  axis.text.x = element_text(angle=50, size=14, vjust=0.5),
+                  axis.text.y = element_text(size=14, vjust=0.5),
                   axis.ticks.x = element_blank()) +
             scale_y_continuous(labels = scales::number_format(accuracy = 0.001)) +
-            geom_text(aes(label = sprintf("%.3f", avg), y = avg + 0.005), position = position_dodge(0.9))
+            geom_text(aes(label = sprintf("%.3f", avg), y = avg + 0.005),
+                      position = position_dodge(0.9), size=5)
             
         p
 
@@ -128,12 +131,14 @@ shinyServer(function(input, output) {
             #coord_cartesian(ylim = c(y_min, y_max)) +
             geom_bar(stat="identity", color = "black", fill = teamColor) +
             labs(title = paste(team, "Most Home Runs"), x = "Player", y = "Home Runs") +
-            theme(plot.title = element_text(size=18, face="bold",
+            theme(plot.title = element_text(size=25, face="bold",
                                             margin = margin(10, 0, 10, 0)),
-                  axis.text.x = element_text(angle=50, size=11, vjust=0.5),
-                  axis.text.y = element_text(size=11, vjust=0.5),
+                  axis.title = element_text(size=14),
+                  axis.text.x = element_text(angle=50, size=14, vjust=0.5),
+                  axis.text.y = element_text(size=14, vjust=0.5),
                   axis.ticks.x = element_blank()) +
-            geom_text(aes(label = HRs, y = HRs + offsetHR), position = position_dodge(0.9))
+            geom_text(aes(label = HRs, y = HRs + offsetHR), 
+                      position = position_dodge(0.9), size=5)
         
         p
         
@@ -153,12 +158,14 @@ shinyServer(function(input, output) {
             #coord_cartesian(ylim = c(y_min, y_max)) +
             geom_bar(stat="identity", color = "black", fill = teamColor) +
             labs(title = paste(team, "Most Runs Batted In"), x = "Player", y = "Runs Batted In") +
-            theme(plot.title = element_text(size=18, face="bold",
+            theme(plot.title = element_text(size=25, face="bold",
                                             margin = margin(10, 0, 10, 0)),
-                  axis.text.x = element_text(angle=50, size=11, vjust=0.5),
-                  axis.text.y = element_text(size=11, vjust=0.5),
+                  axis.title = element_text(size=14),
+                  axis.text.x = element_text(angle=50, size=14, vjust=0.5),
+                  axis.text.y = element_text(size=14, vjust=0.5),
                   axis.ticks.x = element_blank()) +
-            geom_text(aes(label = RBIs, y = RBIs + offsetRBI), position = position_dodge(0.9))
+            geom_text(aes(label = RBIs, y = RBIs + offsetRBI), 
+                      position = position_dodge(0.9), size=5)
         
         p
         
@@ -178,12 +185,14 @@ shinyServer(function(input, output) {
             #coord_cartesian(ylim = c(y_min, y_max)) +
             geom_bar(stat="identity", color = "black", fill = teamColor) +
             labs(title = paste(team, "Most Stolen Bases"), x = "Player", y = "Stolen Bases") +
-            theme(plot.title = element_text(size=18, face="bold",
+            theme(plot.title = element_text(size=25, face="bold",
                                             margin = margin(10, 0, 10, 0)),
-                  axis.text.x = element_text(angle=50, size=11, vjust=0.5),
-                  axis.text.y = element_text(size=11, vjust=0.5),
+                  axis.title = element_text(size=14),
+                  axis.text.x = element_text(angle=50, size=14, vjust=0.5),
+                  axis.text.y = element_text(size=14, vjust=0.5),
                   axis.ticks.x = element_blank()) +
-            geom_text(aes(label = SBs, y = SBs + offsetSB), position = position_dodge(0.9))
+            geom_text(aes(label = SBs, y = SBs + offsetSB), 
+                      position = position_dodge(0.9), size=5)
         
         p
         

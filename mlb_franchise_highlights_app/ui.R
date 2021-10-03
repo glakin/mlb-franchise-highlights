@@ -2,6 +2,7 @@
 
 library(shiny)
 library(Lahman)
+library(dplyr)
 data(TeamsFranchises)
 
 team_names <- TeamsFranchises %>%
@@ -11,7 +12,9 @@ team_names <- TeamsFranchises %>%
 
 shinyUI(fluidPage(
 
-    titlePanel("MLB Franchise Leaders"),
+    titlePanel(
+        h1("MLB Franchise Leaders", align = "center")
+        ),
 
     # Sidebar with a slider input for number of bins
     verticalLayout(

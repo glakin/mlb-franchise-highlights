@@ -1,0 +1,13 @@
+name: mlb_franchise_highlights_app
+title: mlb_franchise_highlights_app
+username:
+account: glakin
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4786566
+bundleId: 5099981
+url: https://glakin.shinyapps.io/mlb_franchise_highlights_app/
+when: 1633288129.79602
+lastSyncTime: 1633288129.79602
+asMultiple: FALSE
+asStatic: FALSE
